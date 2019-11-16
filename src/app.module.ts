@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './users/users.module';
 import * as Environments from "dotenv";
 Environments.config();
-
 @Module({
-  imports: [MongooseModule.forRoot(process.env.db_url,{useUnifiedTopology:true,useNewUrlParser:true})],
+  imports: [MongooseModule.forRoot(process.env.db_url,{useUnifiedTopology:true,useNewUrlParser:true}), UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
