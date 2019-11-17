@@ -1,4 +1,4 @@
-import { Controller, Post,Get, Body, UseGuards  } from '@nestjs/common';
+import { Controller, Post,Get, Body, UseGuards,Request  } from '@nestjs/common';
 import {RegisterUserDto} from "./dtos/register-user.dto"
 import {LoginDto} from "./dtos/login-user.dto"
 import {UsersService } from './users.service';
@@ -16,9 +16,9 @@ export class UsersController {
     return "OK";
   }
 
+  @UseGuards(AuthGuard('local'))
   @Post("login")
   async login(@Body() body : LoginDto): Promise<string> {
-    const user = await this.usersService.login(body);
     return "OK";
   }
 

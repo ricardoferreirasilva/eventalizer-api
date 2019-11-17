@@ -6,7 +6,7 @@ export class LoginDto {
     @ApiModelProperty({example: "user@user.gmail.com"})
     @IsString()
     @IsEmail()
-    readonly email: string;
+    readonly username: string;
 
     @ApiModelProperty({example: "safepassword12345"})
     @IsString()
