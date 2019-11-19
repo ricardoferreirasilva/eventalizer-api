@@ -4,10 +4,12 @@ import {LoginDto} from "./dtos/login-user.dto"
 import {UsersService } from './users.service';
 import { User } from './models/user.model';
 import { AuthGuard } from '@nestjs/passport';
-
+import { AuthService } from '../auth/auth.service';
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService){}
 
 
   @Post("register")
@@ -18,8 +20,8 @@ export class UsersController {
 
   @UseGuards(AuthGuard('local'))
   @Post("login")
-  async login(@Body() body : LoginDto): Promise<string> {
-    return "OK";
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   @Get("all")
