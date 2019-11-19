@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('Back-end API for the Eventalizer application.')
     .setVersion('1.0')
     .addTag('eventalizer')
+    .addBearerAuth("Authorization","header")
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

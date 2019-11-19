@@ -6,6 +6,8 @@ import { User } from './models/user.model';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
@@ -21,10 +23,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard('local'))
   @Post("login")
-  async login(@Request() req) {
+  async login(@Body() body : LoginDto, @Request() req, ) {
     return this.authService.login(req.user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get("all")
   async all(): Promise<User[]> {
