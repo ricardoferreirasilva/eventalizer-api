@@ -18,8 +18,7 @@ export class UsersController {
 
   @Post("register")
   async register(@Body() body : RegisterUserDto) {
-    const user = await this.usersService.register(body);
-    return "OK";
+    return await this.usersService.register(body);
   }
 
   @UseGuards(AuthGuard('local'))
@@ -28,7 +27,7 @@ export class UsersController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Get("get/all")
   async getAll() {
     const users = await this.usersService.all();
