@@ -19,6 +19,11 @@ export class User{
   @prop({
     type: String,
     required: true})
+  role: string
+
+  @prop({
+    type: String,
+    required: true})
   hash: string
   
   public async authenticatePassword(password : String) : Promise<boolean> {

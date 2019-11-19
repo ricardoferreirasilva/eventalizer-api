@@ -16,6 +16,11 @@ export class UsersService {
         const users = await this.UserModel.find();
         return users;
     }
+    
+    public async deleteAll(){
+        return await this.UserModel.deleteMany({});
+    }
+    
     public findByEmail(email: string){
         return this.UserModel.findOne({email:email});
     }
@@ -23,7 +28,7 @@ export class UsersService {
         try {
             const salt : string = await bcrypt.genSalt(10);
             const hash : string = await bcrypt.hash(registerUserDto.password,salt);
-            const newUser = new this.UserModel({name: registerUserDto.name, email: registerUserDto.email, hash:hash});
+            const newUser = new this.UserModel({name: registerUserDto.name, email: registerUserDto.email, hash:hash , role: "partner"});
             return await newUser.save();
         } 
         catch (error) {

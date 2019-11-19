@@ -1,4 +1,4 @@
-import { Controller, Post,Get, Body, UseGuards,Request  } from '@nestjs/common';
+import { Controller, Post,Get, Body, UseGuards,Request, Delete  } from '@nestjs/common';
 import {RegisterUserDto} from "./dtos/register-user.dto"
 import {LoginDto} from "./dtos/login-user.dto"
 import {UsersService } from './users.service';
@@ -6,6 +6,7 @@ import { User } from './models/user.model';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { AdminGuard } from '../auth/guards/admin.guard';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -16,7 +17,7 @@ export class UsersController {
 
 
   @Post("register")
-  async register(@Body() body : RegisterUserDto): Promise<string> {
+  async register(@Body() body : RegisterUserDto) {
     const user = await this.usersService.register(body);
     return "OK";
   }
@@ -27,11 +28,16 @@ export class UsersController {
     return this.authService.login(req.user);
   }
 
-  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get("all")
-  async all(): Promise<User[]> {
+  @Get("get/all")
+  async getAll() {
     const users = await this.usersService.all();
     return users;
+  }
+
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
+  @Delete("delete/all")
+  async deleteAll(){
+    return await this.usersService.deleteAll();
   }
 }
