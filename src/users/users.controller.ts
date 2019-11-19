@@ -5,6 +5,7 @@ import {UsersService } from './users.service';
 import { User } from './models/user.model';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('users')
 export class UsersController {
   constructor(
@@ -24,6 +25,7 @@ export class UsersController {
     return this.authService.login(req.user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get("all")
   async all(): Promise<User[]> {
     const users = await this.usersService.all();
