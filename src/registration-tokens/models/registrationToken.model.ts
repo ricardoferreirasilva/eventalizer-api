@@ -14,9 +14,13 @@ export class RegistrationToken{
   expirationDate: Date;
 
     public async authenticateIdentifier(identifier : String) : Promise<boolean> {
+        const now = Date.now();
         const passwordsMatch : boolean = await bcrypt.compare(identifier, this.hash);
-        if(passwordsMatch){
-            return (passwordsMatch)
+        if(passwordsMatch && now < this.expirationDate.getTime()){
+            return true;
+        }
+        else{
+           return false;
         }
     }
 
