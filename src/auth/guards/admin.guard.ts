@@ -1,6 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
+import { userInfo } from 'os';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -8,8 +9,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    console.log(request)
-    console.log(request.user);
-    return true;
+    if(request.user.role = "admin") return true;
+    else return false;
   }
 }

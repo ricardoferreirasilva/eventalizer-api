@@ -35,6 +35,13 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'), AdminGuard)
+  @Get("get/all/admins")
+  async getAllAdmins() {
+    const users = await this.usersService.allAdmins();
+    return users;
+  }
+
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Delete("delete/all")
   async deleteAll(){
     return await this.usersService.deleteAll();

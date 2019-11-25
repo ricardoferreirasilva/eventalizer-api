@@ -19,6 +19,12 @@ export class UsersService {
         return users;
     }
     
+    public async allAdmins(): Promise<User[]>
+    {
+        const users = await this.UserModel.find({role: "admin"});
+        return users;
+    }
+
     public async deleteAll(){
         return await this.UserModel.deleteMany({});
     }

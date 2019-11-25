@@ -19,6 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, "local") {
         else {
             const passwordMatch = await user.authenticatePassword(password);
             if (!passwordMatch) throw new UnauthorizedException();
+            console.log(user)
             return user;
         }
     }
