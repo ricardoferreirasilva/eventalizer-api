@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Body, Delete } from '@nestjs/common';
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -19,6 +19,12 @@ export class RegistrationTokensController {
     @Get("get/all")
     async getAll() {
         return this.registrationTokenService.getAll();
+    }
+
+    @ApiBearerAuth()
+    @Delete("delete/all")
+    deleteAll() {
+        return this.registrationTokenService.deleteAll();
     }
 
     @ApiBearerAuth()

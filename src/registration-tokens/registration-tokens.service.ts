@@ -41,4 +41,8 @@ export class RegistrationTokensService {
     public async deleteOneById(id: any){
         await this.RegistrationTokenModel.deleteOne({_id : id});
     }
+
+    public async deleteAll(){
+        await this.RegistrationTokenModel.deleteMany({});
+    }
 }
