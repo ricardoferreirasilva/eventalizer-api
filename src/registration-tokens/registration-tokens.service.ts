@@ -28,4 +28,17 @@ export class RegistrationTokensService {
     public getAll(){
         return this.RegistrationTokenModel.find({});
     }
+
+    public async findRegistrationToken(identifier: string){
+        const registrationTokens = await this.RegistrationTokenModel.find({});
+        for(let registrationToken of registrationTokens){
+           const foundToken = await registrationToken.authenticateIdentifier(identifier);
+           if(foundToken) return registrationToken._id;
+        }
+        return false;
+    }
+
+    public async deleteOneById(id: any){
+        await this.RegistrationTokenModel.deleteOne({_id : id});
+    }
 }

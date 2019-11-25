@@ -14,6 +14,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
     }),
   ],
   controllers: [RegistrationTokensController],
-  providers: [RegistrationTokensService]
+  providers: [RegistrationTokensService],
+  exports: [RegistrationTokensService]
 })
 export class RegistrationTokensModule {}

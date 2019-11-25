@@ -1,4 +1,4 @@
-import { Controller, Post,Get, Body, UseGuards,Request, Delete  } from '@nestjs/common';
+import { Controller, Post,Get, Body, UseGuards,Request, Delete, InternalServerErrorException, BadRequestException  } from '@nestjs/common';
 import {RegisterUserDto} from "./dtos/register-user.dto"
 import {LoginDto} from "./dtos/login-user.dto"
 import {UsersService } from './users.service';
@@ -7,6 +7,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { AdminGuard } from '../auth/guards/admin.guard';
+import { RegistrationGuard } from '../auth/guards/registration.guard';
+import { RegistrationTokensService } from '../registration-tokens/registration-tokens.service';
 
 
 
@@ -15,12 +17,16 @@ import { AdminGuard } from '../auth/guards/admin.guard';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly registrationTokenService: RegistrationTokensService,
     private readonly authService: AuthService){}
 
-
+  @UseGuards(RegistrationGuard)
   @Post("register")
-  async register(@Body() body : RegisterUserDto) {
-    return await this.usersService.register(body);
+  async register(@Body() body : RegisterUserDto, @Request() req) {
+    await this.usersService.register(body);
+    const registrationTokenId = req.registrationToken;
+    await this.registrationTokenService.deleteOneById(registrationTokenId);
+    return "OK";
   }
 
   @UseGuards(AuthGuard('local'))
