@@ -5,10 +5,12 @@ import {UsersService } from './users.service';
 import { User } from './models/user.model';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { AdminGuard } from '../auth/guards/admin.guard';
 
-@ApiBearerAuth()
+
+
+@ApiUseTags("users")
 @Controller('users')
 export class UsersController {
   constructor(
@@ -27,6 +29,7 @@ export class UsersController {
     return this.authService.login(req.user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Get("get/all")
   async getAll() {
@@ -34,6 +37,7 @@ export class UsersController {
     return users;
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Get("get/all/admins")
   async getAllAdmins() {
@@ -41,6 +45,7 @@ export class UsersController {
     return users;
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Delete("delete/all")
   async deleteAll(){
