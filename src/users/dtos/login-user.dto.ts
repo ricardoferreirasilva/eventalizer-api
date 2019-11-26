@@ -3,7 +3,7 @@ import {IsString,IsEmail,MinLength} from "class-validator"
 
 export class LoginDto {
 
-    @ApiModelProperty({example: "user@user.gmail.com"})
+    @ApiModelProperty({example: "admin@eventalizer.com"})
     @IsString()
     @IsEmail()
     readonly username: string;
