@@ -4,7 +4,8 @@ import { Session } from './models/session.model';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateSessionDto } from './dtos/create-session-dto';
 import { DeleteOneSessionDto } from './dtos/delete-one-session.dto';
-import { ObjectID } from 'bson';
+import { ObjectID } from 'mongodb';
+import { MakeReservationDto } from './dtos/make-reservation-dto';
 
 @Injectable()
 export class SessionsService {
@@ -18,6 +19,13 @@ export class SessionsService {
         const session = new this.SessionModel({start: createSession.start, end: createSession.end, maxTickets: createSession.maxTickets});
         return await session.save();
     }
+
+    public async reserve(reservation: MakeReservationDto, userId : ObjectID){
+        const session = await this.SessionModel.findById(reservation.sessionId);
+        session.reservations.push({partnerId:userId,tickets:reservation.tickets})
+        return await session.save();
+    }
+
     public async deleteAll(){
         return this.SessionModel.deleteMany({});
     }
