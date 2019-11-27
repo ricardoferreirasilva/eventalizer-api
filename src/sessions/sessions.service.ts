@@ -10,4 +10,13 @@ export class SessionsService {
     public async getAll(){
         return this.SessionModel.find({});
     }
+
+    public async deleteAll(){
+        return this.SessionModel.deleteMany({});
+    }
+
+    public async deleteOld(){
+        return this.SessionModel.deleteMany({end: {$lt : Date.now() }});
+    }
+
 }

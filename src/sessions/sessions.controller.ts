@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Delete } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 import { SessionsService } from './sessions.service';
 
@@ -11,5 +11,11 @@ export class SessionsController {
     @Get("get/all")
     async getAll() {
         return this.sessionsService.getAll();
+    }
+
+    
+    @Delete("delete/all")
+    async deleteAll() {
+        return this.sessionsService.deleteAll();
     }
 }
