@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Session } from './models/session.model';
 import { ReturnModelType } from '@typegoose/typegoose';
@@ -27,8 +27,17 @@ export class SessionsService {
 
     public async reserve(reservation: MakeReservationDto, userId : ObjectID){
         const session = await this.SessionModel.findById(reservation.sessionId);
-        session.reservations.push({partnerId:userId,tickets:reservation.tickets})
-        return await session.save();
+        const canReserve : number | boolean = session.canReserve(reservation.tickets);
+
+        // Enough free tickets.
+        if(canReserve == true){
+            session.reservations.push({partnerId:userId,tickets:reservation.tickets})
+            return await session.save();
+        }
+        else{
+            const message = `There are only ${this.SessionModel.freeTickets} tickets left.`
+            throw new NotAcceptableException(message)
+        }
     }
 
     public async deleteAll(){

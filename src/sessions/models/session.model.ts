@@ -45,5 +45,14 @@ export class Session{
     return count;
   }
   
+  public get freeTickets() : number {
+    return (this.maxTickets - this.totalReservations)
+  }
+  
+  public canReserve(tickets : number) : number | boolean {
+      if(tickets <= this.freeTickets) return true;
+      else return this.freeTickets;
+  }
+
 }
 

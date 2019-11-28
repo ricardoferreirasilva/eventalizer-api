@@ -20,21 +20,6 @@ export class UsersController {
     private readonly registrationTokenService: RegistrationTokensService,
     private readonly authService: AuthService){}
 
-  @UseGuards(RegistrationGuard)
-  @Post("register")
-  async register(@Body() body : RegisterUserDto, @Request() req) {
-    await this.usersService.register(body);
-    const registrationTokenId = req.registrationToken;
-    await this.registrationTokenService.deleteOneById(registrationTokenId);
-    return "OK";
-  }
-
-  @UseGuards(AuthGuard('local'))
-  @Post("login")
-  async login(@Body() body : LoginDto, @Request() req, ) {
-    return this.authService.login(req.user);
-  }
-
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Get("get/all")
@@ -51,6 +36,21 @@ export class UsersController {
     return users;
   }
 
+  @UseGuards(RegistrationGuard)
+  @Post("register")
+  async register(@Body() body : RegisterUserDto, @Request() req) {
+    await this.usersService.register(body);
+    const registrationTokenId = req.registrationToken;
+    await this.registrationTokenService.deleteOneById(registrationTokenId);
+    return "OK";
+  }
+
+  @UseGuards(AuthGuard('local'))
+  @Post("login")
+  async login(@Body() body : LoginDto, @Request() req, ) {
+    return this.authService.login(req.user);
+  }
+  
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   @Delete("delete/all")

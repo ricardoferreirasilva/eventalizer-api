@@ -22,16 +22,17 @@ export class RegistrationTokensController {
     }
 
     @ApiBearerAuth()
-    @Delete("delete/all")
-    deleteAll() {
-        return this.registrationTokenService.deleteAll();
-    }
-
-    @ApiBearerAuth()
     @Post("create")
     async create(@Body() createRegistrationToken: CreateRegistrationTokenDto) {
         let registrationToken: RegistrationToken =  await this.registrationTokenService.create(createRegistrationToken);
         return registrationToken;
     }
+
+    @ApiBearerAuth()
+    @Delete("delete/all")
+    deleteAll() {
+        return this.registrationTokenService.deleteAll();
+    }
+
 
 }

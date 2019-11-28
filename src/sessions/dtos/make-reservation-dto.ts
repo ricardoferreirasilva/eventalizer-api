@@ -11,7 +11,9 @@ export class MakeReservationDto {
     @Type(() => ObjectID)
     readonly sessionId: ObjectID;
     
+    @ApiModelProperty({example: 5})
     @IsNumber()
+    @IsDefined()
     @Min(0)
     readonly tickets: number;
 
