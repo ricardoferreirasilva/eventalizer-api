@@ -1,37 +1,49 @@
-import { prop, Ref} from "@typegoose/typegoose";
+import { prop, Ref, Typegoose, arrayProp} from "@typegoose/typegoose";
 import { ObjectID } from "mongodb"
 import * as bcrypt from "bcrypt"
- 
+
 class TicketReservation {
 
-    @prop({type: ObjectID, required: true})
-    partnerId: ObjectID;
+  @prop({ type: ObjectID, required: true })
+  partnerId: ObjectID;
 
-    @prop({type: Number, required: true, min: 1})
-    tickets: number;
+  @prop({ type: Number, required: true, min: 1 })
+  tickets: number;
 
 }
 
 export class Session{
   @prop({
     type: Date,
-    required: true})
+    required: true
+  })
   start: Date;
 
   @prop({
     type: Date,
-    required: true})
+    required: true
+  })
   end: Date;
-  
+
   @prop({
     type: Number,
-    required: true})
+    required: true
+  })
   maxTickets: number;
 
-  @prop({
-    type: Array,
-    required: true})
-    reservations: TicketReservation[];
-}
+  @arrayProp({
+    items: TicketReservation,
+    required: true
+  })
+  reservations?: TicketReservation[];
 
+  public get totalReservations() : number {
+    let reservations : any[] = this.reservations;
+    let count = reservations.reduce((previousValue: number, currentReservation : TicketReservation,)=>{
+      return previousValue + currentReservation.tickets;
+    }, 0);
+    return count;
+  }
+  
+}
 

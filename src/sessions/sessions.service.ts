@@ -6,6 +6,7 @@ import { CreateSessionDto } from './dtos/create-session-dto';
 import { DeleteOneSessionDto } from './dtos/delete-one-session.dto';
 import { ObjectID } from 'mongodb';
 import { MakeReservationDto } from './dtos/make-reservation-dto';
+import { GetOneSessionDto } from './dtos/get-one-session.dto';
 
 @Injectable()
 export class SessionsService {
@@ -14,7 +15,11 @@ export class SessionsService {
     public async getAll(){
         return this.SessionModel.find({});
     }
-
+    public async getTotalReservations(getSession: GetOneSessionDto){
+        const session = await this.SessionModel.findById(getSession.id);
+        const totalReservations = session.totalReservations;
+        return totalReservations;
+    }
     public async create(createSession: CreateSessionDto){
         const session = new this.SessionModel({start: createSession.start, end: createSession.end, maxTickets: createSession.maxTickets});
         return await session.save();
@@ -35,8 +40,7 @@ export class SessionsService {
     }
 
     public async deleteOne(deleteOne : DeleteOneSessionDto){
-        let id : ObjectID = deleteOne.id;
-        return this.SessionModel.deleteOne({_id: id});
+        return this.SessionModel.findByIdAndDelete(deleteOne.id);
     }
 
 }
