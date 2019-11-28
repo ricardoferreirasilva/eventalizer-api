@@ -14,7 +14,7 @@ export class MakeReservationDto {
     @ApiModelProperty({example: 5})
     @IsNumber()
     @IsDefined()
-    @Min(0)
+    @Min(1)
     readonly tickets: number;
 
   }

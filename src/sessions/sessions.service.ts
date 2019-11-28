@@ -30,12 +30,12 @@ export class SessionsService {
         const canReserve : number | boolean = session.canReserve(reservation.tickets);
 
         // Enough free tickets.
-        if(canReserve == true){
+        if(canReserve === true){
             session.reservations.push({partnerId:userId,tickets:reservation.tickets})
             return await session.save();
         }
         else{
-            const message = `There are only ${this.SessionModel.freeTickets} tickets left.`
+            const message = `There are only ${session.freeTickets} tickets left.`
             throw new NotAcceptableException(message)
         }
     }
