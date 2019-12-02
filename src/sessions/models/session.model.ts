@@ -1,14 +1,13 @@
 import { prop, Ref, Typegoose, arrayProp} from "@typegoose/typegoose";
 import { ObjectID } from "mongodb"
-import * as bcrypt from "bcrypt"
 
 class TicketReservation {
 
-  @prop({ type: ObjectID, required: true })
-  partnerId: ObjectID;
+  @prop({ type: ObjectID, required: true, index: true})
+  partnerId?: ObjectID;
 
   @prop({ type: Number, required: true, min: 1 })
-  tickets: number;
+  tickets?: number;
 
 }
 
@@ -33,7 +32,8 @@ export class Session{
 
   @arrayProp({
     items: TicketReservation,
-    required: true
+    required: true,
+    _id: true
   })
   reservations?: TicketReservation[];
 

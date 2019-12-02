@@ -5,7 +5,6 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateSessionDto } from './dtos/create-session-dto';
 import { DeleteOneSessionDto } from './dtos/delete-one-session.dto';
 import { ObjectID } from 'mongodb';
-import { MakeReservationDto } from './dtos/make-reservation-dto';
 import { GetOneSessionDto } from './dtos/get-one-session.dto';
 
 @Injectable()
@@ -25,20 +24,6 @@ export class SessionsService {
         return await session.save();
     }
 
-    public async reserve(reservation: MakeReservationDto, userId : ObjectID){
-        const session = await this.SessionModel.findById(reservation.sessionId);
-        const canReserve : number | boolean = session.canReserve(reservation.tickets);
-
-        // Enough free tickets.
-        if(canReserve === true){
-            session.reservations.push({partnerId:userId,tickets:reservation.tickets})
-            return await session.save();
-        }
-        else{
-            const message = `There are only ${session.freeTickets} tickets left.`
-            throw new NotAcceptableException(message)
-        }
-    }
 
     public async deleteAll(){
         return this.SessionModel.deleteMany({});
