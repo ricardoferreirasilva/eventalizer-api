@@ -1,7 +1,8 @@
 import { prop, Ref, Typegoose, arrayProp} from "@typegoose/typegoose";
-import { ObjectID } from "mongodb"
+import { ObjectID, ObjectId } from "mongodb"
 
 class TicketReservation {
+  _id?: ObjectID;
 
   @prop({ type: ObjectID, required: true, index: true})
   partnerId?: ObjectID;
@@ -54,5 +55,18 @@ export class Session{
       else return this.freeTickets;
   }
 
+  public deleteReservationById(reservationId: ObjectID, partnerId: ObjectID){
+      let deletedReservation = undefined;
+      reservationId = new ObjectID(reservationId);
+      partnerId = new ObjectId(partnerId);
+      this.reservations = this.reservations.filter((reservation,index,array)=>{
+       if(reservationId.equals(reservation._id) && partnerId.equals(reservation.partnerId)){
+          deletedReservation = reservation;
+          return false;
+        }
+        else return true;
+      });
+      return deletedReservation;
+    }
 }
 

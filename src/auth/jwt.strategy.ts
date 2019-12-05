@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import * as Environments from "dotenv";
+import { ObjectID } from 'mongodb';
 Environments.config();
 
 @Injectable()
@@ -15,6 +16,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return { userId: payload._id, username: payload.username };
+    return { userId: new ObjectID(payload._id), username: payload.username };
   }
 }
