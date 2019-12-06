@@ -1,0 +1,6 @@
+{
+    "port": 3000,
+    "mongoUri" : "mongodb+srv://admin_db:Vq6qcjxDAD6Jcocv@eventalizercluster-emvuk.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret" : "evil123124",
+    "adminSecret" : "1234567"
+}

@@ -9,6 +9,7 @@ import { RegistrationTokensModule } from './registration-tokens/registration-tok
 import { SessionsModule } from './sessions/sessions.module';
 import { JobsModule } from './jobs/jobs.module';
 import * as Environments from "dotenv";
+import environment from "./configs/configuration"
 Environments.config();
 @Module({
   imports: [
@@ -20,4 +21,7 @@ Environments.config();
 })
 export class AppModule {
 
+    constructor(){
+      console.log(environment)
+    }
 }
