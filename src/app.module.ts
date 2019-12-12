@@ -14,14 +14,10 @@ Environments.config();
 @Module({
   imports: [
     ScheduleModule.register(),
-    TypegooseModule.forRoot(process.env.db_url,{useUnifiedTopology:true,useNewUrlParser:true,useCreateIndex: true}),
+    TypegooseModule.forRoot(environment.mongoUri,{useUnifiedTopology:true,useNewUrlParser:true,useCreateIndex: true}),
     UsersModule, AuthModule, RegistrationTokensModule, SessionsModule, JobsModule],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-
-    constructor(){
-      console.log(environment)
-    }
 }
