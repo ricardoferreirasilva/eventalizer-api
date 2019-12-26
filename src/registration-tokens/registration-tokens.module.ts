@@ -4,12 +4,13 @@ import { RegistrationTokensService } from './registration-tokens.service';
 import { JwtModule } from '@nestjs/jwt';
 import { RegistrationToken } from './models/registrationToken.model';
 import { TypegooseModule } from 'nestjs-typegoose';
+import environment from "../configs/configuration"
 
 @Module({
   imports: [
     TypegooseModule.forFeature([RegistrationToken]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: environment.jwtSecret,
       signOptions: { expiresIn: '30d' }
     }),
   ],

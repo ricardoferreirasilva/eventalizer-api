@@ -6,14 +6,14 @@ import { LocalStrategy } from './local.strategy';
 import { AdminGuard } from './guards/admin.guard';
 import { JwtStrategy } from './jwt.strategy';
 import {JwtModule} from "@nestjs/jwt"
-import * as Environments from "dotenv";
 import { RegistrationGuard } from './guards/registration.guard';
 import { RegistrationTokensModule } from '../registration-tokens/registration-tokens.module';
-Environments.config();
+import environment from "../configs/configuration"
+
 @Module({
   imports: [forwardRef(() => UsersModule), PassportModule, RegistrationTokensModule,
   JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: environment.jwtSecret,
       signOptions: { expiresIn: '60m' },
     }),
   ],

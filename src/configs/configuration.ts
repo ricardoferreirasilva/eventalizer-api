@@ -1,4 +1,6 @@
 import * as fs from "fs";
+import * as Environments from "dotenv";
+Environments.config();
 class Configuration {
 
 
@@ -8,30 +10,42 @@ class Configuration {
     public readonly adminSecret: string;
 
 
-    constructor(configurationPath: fs.PathLike){
+    constructor(){
         this.port = 3000;
-        
-        if(!fs.existsSync(configurationPath)){
-            console.error("Missing configuration file at: " + configurationPath);
+
+        if(process.env.PORT !== undefined){
+            try {
+                this.port = parseInt(process.env.PORT);
+            } catch (error) {
+                throw new Error("Could not parse environment -> port.");
+            }
         }
         else{
-            const configurationFile = fs.readFileSync(configurationPath,{encoding:"UTF-8"});
-            try {
-                // Parsing the configuration file.
-                const configurationObject = JSON.parse(configurationFile);
+            console.warn("Port is not defined. Defaulting to 3000.")
+        }
 
-                // Attributing variables.
-                this.port = configurationObject.port;
-                this.mongoUri = configurationObject.mongoUri;
-                this.jwtSecret = configurationObject.jwtSecret;
-                this.adminSecret = configurationObject.adminSecret;
+        if(process.env.MONGODB_URI !== undefined){
+            this.mongoUri = process.env.MONGODB_URI;
+        }
+        else{
+            throw new Error("MongoDB uri is not defined.")
+        }
 
-            } catch (error) {
-                console.error(error);
-            }
+        if(process.env.JWT_SECRET !== undefined){
+            this.jwtSecret = process.env.JWT_SECRET;
+        }
+        else{
+            throw new Error("Jwt Secret is not defined.")
+        }
+
+        if(process.env.ADMIN_SECRET !== undefined){
+            this.adminSecret = process.env.ADMIN_SECRET;
+        }
+        else{
+            throw new Error("Admin secret is not defined.")
         }
     }
 }
 
-const configuration : Configuration = new Configuration(process.cwd() + "\\environment.json");
+const configuration : Configuration = new Configuration();
 export default configuration;

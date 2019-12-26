@@ -8,9 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { RegistrationTokensModule } from './registration-tokens/registration-tokens.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { JobsModule } from './jobs/jobs.module';
-import * as Environments from "dotenv";
 import environment from "./configs/configuration"
-Environments.config();
 @Module({
   imports: [
     ScheduleModule.register(),
